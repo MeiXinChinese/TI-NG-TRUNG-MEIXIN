@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGỮ PHÁP HSK2 3.0 · TIẾNG TRUNG MEIXIN</title>
+<style>
+  :root{
+    --bg:#FFF7D6;
+    --card:#FFFFFF;
+    --accent:#FF9F43;
+    --accent2:#FF6B6B;
+    --accent3:#4D96FF;
+    --accent4:#6BCB77;
+    --text:#3A2E1F;
+    --muted:#8a7a55;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;
+    background:var(--bg); color:var(--text); padding-bottom:60px;
+  }
+  header{
+    background:linear-gradient(135deg,#FFD166,#FFB84D); padding:26px 20px 20px; text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.08); position:relative;
+  }
+  header a.back-link{
+    position:absolute; left:16px; top:16px; font-size:13px; color:#7a4300; text-decoration:none; font-weight:700;
+  }
+  header h1{ margin:0; font-size:26px; color:#5a3d1a; }
+  header p{ margin:6px 0 0; font-size:14px; color:#6b4a1c; }
+
+  .toc-bar{
+    position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:2px dashed #f0d98a;
+    padding:12px 16px; display:flex; gap:8px; overflow-x:auto; white-space:nowrap;
+  }
+  .toc-bar a{
+    display:inline-block; background:#fff; color:#8a6d2e; font-size:12.5px; font-weight:700;
+    padding:7px 13px; border-radius:16px; text-decoration:none; box-shadow:0 2px 6px rgba(0,0,0,.06);
+    flex-shrink:0;
+  }
+  .toc-bar a:hover{ background:var(--accent); color:#fff; }
+
+  main{ max-width:880px; margin:0 auto; padding:20px 16px 40px; }
+
+  .topic-block{
+    scroll-margin-top:64px; margin-bottom:44px; padding-bottom:20px; border-bottom:3px dashed #f0d98a;
+  }
+  .topic-num{
+    display:inline-block; background:var(--accent2); color:#fff; font-weight:800; font-size:13px;
+    padding:4px 12px; border-radius:14px; margin-bottom:8px;
+  }
+  .topic-title{ font-size:21px; font-weight:800; color:#8a4b00; margin:0 0 14px; }
+
+  .explain-card{
+    background:var(--card); border-radius:16px; padding:16px 20px; box-shadow:0 3px 10px rgba(0,0,0,.08);
+    margin-bottom:16px;
+  }
+  .explain-card p{ margin:0 0 10px; font-size:14.5px; line-height:1.6; }
+  .explain-card ul{ margin:6px 0; padding-left:20px; font-size:14px; }
+  .formula{
+    background:#FFEFD5; border-radius:10px; padding:10px 14px; text-align:center; font-size:16px; font-weight:700;
+    color:#8a4b00; margin:10px 0;
+  }
+  .example-line{ padding:6px 0; border-bottom:1px dashed #eee2b8; }
+  .example-line:last-child{ border-bottom:none; }
+  .example-line .cn{ font-size:16px; font-weight:600; }
+  .example-line .py{ color:var(--muted); font-size:12.5px; }
+  .example-line .vn{ color:#444; font-size:13.5px; }
+
+  .ex-box{
+    background:var(--card); border-radius:14px; padding:16px 18px; margin-bottom:14px; box-shadow:0 3px 10px rgba(0,0,0,.07);
+  }
+  .ex-box h4{ margin:0 0 4px; color:#8a4b00; font-size:14.5px; }
+  .ex-box .ex-desc{ color:var(--muted); font-size:12.5px; margin-bottom:10px; }
+
+  /* Sentence order */
+  .chip-bank, .chip-answer{ display:flex; flex-wrap:wrap; gap:8px; min-height:42px; padding:8px; border-radius:10px; }
+  .chip-bank{ background:#FDEBC8; }
+  .chip-answer{ background:#fff; border:2px dashed #e0c073; }
+  .chip{
+    background:var(--accent3); color:#fff; padding:7px 11px; border-radius:8px; cursor:pointer; font-size:15px;
+    text-align:center; line-height:1.1; user-select:none;
+  }
+  .chip .py-tag{ display:block; font-size:9.5px; opacity:.85; }
+  .chip.used{ opacity:.35; pointer-events:none; }
+  .task-controls{ margin-top:8px; display:flex; gap:8px; }
+  .btn{
+    background:var(--accent); color:#fff; border:none; padding:7px 15px; border-radius:18px; cursor:pointer;
+    font-weight:600; font-size:12.5px;
+  }
+  .btn.secondary{ background:#ccc; color:#444; }
+  .feedback{ margin-top:6px; font-weight:700; font-size:13px; }
+  .feedback.ok{ color:#2e9e44; }
+  .feedback.no{ color:#e04b4b; }
+
+  /* translate / dat cau */
+  .ex-box textarea, .ex-box input[type=text]{
+    width:100%; border:2px solid #e0c073; border-radius:10px; padding:8px 10px; font-size:15px;
+    font-family:inherit; box-sizing:border-box; margin-bottom:8px; resize:vertical;
+  }
+  .sample-answer{
+    background:#FFF9E6; border-radius:8px; padding:8px 10px; font-size:13.5px; margin-top:6px; display:none;
+  }
+  .sample-answer.show{ display:block; }
+
+  /* fill blank */
+  .wordbank-chip{
+    background:#FFE8B8; color:#8a4b00; padding:6px 12px; border-radius:8px; font-size:14px; font-weight:700;
+  }
+  .fill-item{ margin-bottom:12px; background:#FFF9E6; border-radius:10px; padding:10px 12px; }
+  .fill-item .fill-sentence{ font-size:15px; margin-bottom:4px; }
+  .fill-item .fill-sentence input{
+    border:2px solid #e0c073; border-radius:8px; padding:4px 8px; font-size:14px; width:90px; text-align:center; margin:0 4px;
+  }
+  .fill-item .fill-vn{ font-size:12.5px; color:var(--muted); font-style:italic; }
+
+  /* matching */
+  .match-wrap{ display:flex; gap:20px; flex-wrap:wrap; justify-content:space-between; }
+  .match-col{ flex:1; min-width:220px; display:flex; flex-direction:column; gap:7px; }
+  .match-item{
+    padding:8px 11px; border-radius:9px; background:#FFF3D6; cursor:pointer; font-size:14px;
+    border:2px solid transparent; transition:.15s;
+  }
+  .match-item .py-tag{ display:block; font-size:10.5px; color:var(--muted); }
+  .match-item.selected{ border-color:var(--accent3); background:#E6F0FF; }
+  .match-item.correct{ border-color:var(--accent4); background:#E9FBEA; cursor:default; opacity:.7; }
+  .match-item.wrong{ animation:shake .3s; }
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+  .progress-note{ font-size:11.5px; color:var(--muted); text-align:center; margin-top:6px; }
+
+  /* true/false */
+  .tf-item{ background:#FFF9E6; border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .tf-item .tf-statement{ font-size:14.5px; margin-bottom:8px; }
+  .tf-item .tf-btns{ display:flex; gap:8px; }
+  .tf-item button{
+    border:2px solid #e0c073; background:#fff; padding:6px 16px; border-radius:16px; font-weight:700; cursor:pointer; font-size:13px;
+  }
+  .tf-item button.chosen-correct{ background:#E9FBEA; border-color:var(--accent4); }
+  .tf-item button.chosen-wrong{ background:#FDEAEA; border-color:var(--accent2); }
+  .tf-explain{ margin-top:6px; font-size:12.5px; color:var(--muted); display:none; }
+  .tf-explain.show{ display:block; }
+
+  .capstone-title{ font-size:24px; font-weight:800; color:var(--accent2); text-align:center; margin:36px 0 6px; }
+  .capstone-sub{ text-align:center; color:var(--muted); font-size:13.5px; margin-bottom:20px; }
+
+  footer{ text-align:center; font-size:12px; color:var(--muted); margin-top:30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="HSK2 3.0.html">&larr; Quay lại khóa HSK2</a>
+  <h1>📐 NGỮ PHÁP HSK2 3.0</h1>
+  <p>25 điểm ngữ pháp trọng tâm — Lý thuyết + Bài tập tương tác</p>
+</header>
+
+<nav class="toc-bar" id="tocBar"></nav>
+
+<main id="mainContent"></main>
+
+<footer>TIẾNG TRUNG MEIXIN · MeiXin Chinese · ZALO: 0394 088 214</footer>
+
+<script>
+const TOPICS = [{"short": "Tính từ lặp lại", "title": "1. 形容词重叠 — Tính từ lặp lại", "explain": "So với tính từ ở dạng thông thường, tính từ lặp lại không làm thay đổi ý nghĩa cơ bản, mà chủ yếu dùng để nhấn mạnh mức độ, làm lời nói nhẹ nhàng, tự nhiên và thể hiện sự yêu thích, thân mật. Tính từ đã lặp lại thì không dùng thêm phó từ mức độ 很/非常.", "formula": "Đơn âm tiết: A → AA的 &nbsp; | &nbsp; Song âm tiết: AB → AABB的", "examples": [{"cn": "她的脸红红的。", "py": "Tā de liǎn hónghóng de.", "vn": "Mặt cô ấy đỏ hồng."}, {"cn": "房间里干干净净的。", "py": "Fángjiān lǐ gāngānjìngjìng de.", "vn": "Trong phòng sạch sẽ."}, {"cn": "她每天都漂漂亮亮的。", "py": "Tā měitiān dōu piàopiàoliàngliàng de.", "vn": "Ngày nào cô ấy cũng xinh đẹp."}], "sentence_order": [{"vn": "Con mèo nhỏ có đôi mắt to tròn.", "words": [{"hz": "小猫", "py": "Xiǎomāo"}, {"hz": "的", "py": "de"}, {"hz": "眼睛", "py": "yǎnjīng"}, {"hz": "大大", "py": "dàdà"}, {"hz": "的", "py": "de"}, {"hz": "。", "py": "."}]}, {"vn": "Chúc bạn ngày nào cũng vui vẻ.", "words": [{"hz": "祝", "py": "zhù"}, {"hz": "你", "py": "nǐ"}, {"hz": "每天", "py": "měitiān"}, {"hz": "都", "py": "dōu"}, {"hz": "开开心心", "py": "kāikāixīnxīn"}, {"hz": "的", "py": "de"}, {"hz": "。", "py": "."}]}], "fill_blank": {"bank": ["冷冷", "漂漂亮亮", "胖胖", "高高兴兴"], "items": [{"before": "今天天气", "after": "的。（冷）", "answer": "冷冷", "vn": "Thời tiết hôm nay lành lạnh."}, {"before": "妹妹今天穿得", "after": "的。（漂亮）", "answer": "漂漂亮亮", "vn": "Hôm nay em gái mặc rất xinh xắn."}, {"before": "小狗", "after": "的，很可爱。（胖）", "answer": "胖胖", "vn": "Chú chó con mũm mĩm, rất dễ thương."}, {"before": "孩子们", "after": "地跑进教室。（高兴）", "answer": "高兴", "vn": "Các em bé vui vẻ chạy vào lớp học."}]}, "translate": [{"vn": "Mắt của cô bé to tròn.", "accept": ["她的眼睛大大的"], "py": "Tā de yǎnjīng dàdà de."}]}, {"short": "什么的", "title": "2. 什么的 — Cụm từ cố định \"vân vân\"", "explain": "什么的 là cụm từ cố định đặt ở cuối một danh từ hoặc chuỗi danh từ, biểu thị ý '...vân vân', '...các kiểu'. Dùng khi người nói không muốn/không cần liệt kê hết tất cả sự vật cùng loại.", "formula": "A、B、C + 什么的", "examples": [{"cn": "我喜欢吃芒果、苹果、葡萄什么的。", "py": "Wǒ xǐhuān chī mángguǒ, píngguǒ, pútáo shénme de.", "vn": "Tôi thích ăn xoài, táo, nho các loại."}, {"cn": "桌子上有本子、电脑、笔什么的。", "py": "Zhuōzi shàng yǒu běnzi, diànnǎo, bǐ shénme de.", "vn": "Trên bàn có vở, máy tính, bút các thứ."}], "sentence_order": [{"vn": "Cuối tuần tôi thường xem phim, đọc sách các kiểu.", "words": [{"hz": "周末", "py": "zhōumò"}, {"hz": "我", "py": "wǒ"}, {"hz": "常常", "py": "chángcháng"}, {"hz": "看电影", "py": "kàn diànyǐng"}, {"hz": "、", "py": "、"}, {"hz": "看书", "py": "kàn shū"}, {"hz": "什么的", "py": "shénme de"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "什么的", "hint_vn": "liệt kê rồi bỏ lửng bằng 什么的", "sample_cn": "妈妈让我买菜、买肉什么的。", "sample_py": "Māma ràng wǒ mǎi cài, mǎi ròu shénme de.", "sample_vn": "Mẹ bảo tôi mua rau, mua thịt các thứ."}], "translate": [{"vn": "Tôi thích ăn táo, chuối và các loại trái cây khác.", "accept": ["我喜欢吃苹果香蕉什么的", "我喜欢吃苹果、香蕉什么的"], "py": "Wǒ xǐhuān chī píngguǒ, xiāngjiāo shénme de."}]}, {"short": "地 (trạng ngữ)", "title": "3. 地 — Trợ từ kết cấu", "explain": "地 (de) dùng để nối trạng ngữ (từ/cụm từ miêu tả cách thức, trạng thái) với động từ, biểu thị hành động được thực hiện như thế nào. Trong tiếng Việt thường hiểu là 'một cách...', '...mà...'.", "formula": "Adj / Cụm adj + 地 + Động từ", "examples": [{"cn": "他认真地学习。", "py": "Tā rènzhēn de xuéxí.", "vn": "Anh ấy học một cách chăm chỉ."}, {"cn": "学生们高兴地回家。", "py": "Xuéshēngmen gāoxìng de huíjiā.", "vn": "Các bạn học sinh vui vẻ về nhà."}, {"cn": "她难过地说：“我要回国了”。", "py": "Tā nánguò de shuō: \"Wǒ yào huíguóle\".", "vn": "Cô ấy buồn bã nói: tớ sắp phải về nước rồi."}], "sentence_order": [{"vn": "Cậu bé buồn bã đi bộ về nhà.", "words": [{"hz": "男孩", "py": "nánhái"}, {"hz": "难过", "py": "nánguò"}, {"hz": "地", "py": "de"}, {"hz": "走路", "py": "zǒulù"}, {"hz": "回家", "py": "huíjiā"}, {"hz": "。", "py": "."}]}, {"vn": "Cô ấy vui vẻ hát lên.", "words": [{"hz": "她", "py": "tā"}, {"hz": "高兴", "py": "gāoxìng"}, {"hz": "地", "py": "de"}, {"hz": "唱起歌来", "py": "chàng qǐ gē lái"}, {"hz": "。", "py": "."}]}], "fill_blank": {"bank": ["认真", "高兴", "大声", "难过"], "items": [{"before": "他", "after": "地学习。", "answer": "认真", "vn": "Anh ấy học một cách chăm chỉ."}, {"before": "学生们", "after": "地回家。", "answer": "高兴", "vn": "Các bạn học sinh vui vẻ về nhà."}, {"before": "老板", "after": "地说：“今天不用加班”。", "answer": "大声", "vn": "Sếp lớn tiếng nói: hôm nay không cần tăng ca."}]}, "translate": [{"vn": "Sếp to tiếng nói: từ ngày mai bạn không cần đến công ty làm nữa.", "accept": ["老板大声地说从明天起你不用来公司上班了"], "py": "Lǎobǎn dàshēng de shuō: cóng míngtiān qǐ nǐ bùyòng lái gōngsī shàngbān le."}]}, {"short": "一……就……", "title": "4. 一……就…… — Câu phức chỉ điều kiện tức thì", "explain": "Biểu thị hành động thứ hai xảy ra ngay sau hành động thứ nhất, hai hành động có quan hệ chặt chẽ về thời gian. Thường dịch: vừa...đã.../ hễ...là.../ cứ...thì.../ mới...đã...", "formula": "S + 一 + V1 + 就 + V2 &nbsp; | &nbsp; S1 + 一 + V1，S2 + 就 + V2", "examples": [{"cn": "我一下课就回家了。", "py": "Wǒ yī xiàkè jiù huíjiā le.", "vn": "Tôi vừa tan học là về nhà."}, {"cn": "爸爸一回到家就做饭。", "py": "Bàba yī huídào jiā jiù zuòfàn.", "vn": "Bố vừa về đến nhà là đi nấu cơm."}, {"cn": "我一到家，妈妈就给我打电话。", "py": "Wǒ yī dào jiā, māma jiù gěi wǒ dǎ diànhuà.", "vn": "Tôi vừa về đến nhà mẹ đã gọi cho tôi."}], "sentence_order": [{"vn": "Hễ đến mùa hè là anh ấy đi du lịch.", "words": [{"hz": "一", "py": "yī"}, {"hz": "到", "py": "dào"}, {"hz": "夏天", "py": "xiàtiān"}, {"hz": "他", "py": "tā"}, {"hz": "就", "py": "jiù"}, {"hz": "出去", "py": "chūqù"}, {"hz": "旅游", "py": "lǚyóu"}, {"hz": "。", "py": "."}]}, {"vn": "Bố vừa về là con cún liền chạy lại.", "words": [{"hz": "爸爸", "py": "bàba"}, {"hz": "一", "py": "yī"}, {"hz": "回来", "py": "huílái"}, {"hz": "小狗", "py": "xiǎogǒu"}, {"hz": "就", "py": "jiù"}, {"hz": "跑", "py": "pǎo"}, {"hz": "过去了", "py": "guòqùle"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "一……就……", "hint_vn": "diễn tả 2 hành động xảy ra liền nhau", "sample_cn": "我一看书就打哈欠。", "sample_py": "Wǒ yī kàn shū jiù dǎ hāqian.", "sample_vn": "Hễ đọc sách là tôi ngáp."}], "translate": [{"vn": "Tôi vừa mở cửa thì nhìn thấy mẹ.", "accept": ["我一开门就看见妈妈了", "我一开门就看见妈妈"], "py": "Wǒ yī kāimén jiù kànjiàn māma le."}]}, {"short": "Bổ ngữ trạng thái", "title": "5. 状态补语 — Bổ ngữ trạng thái", "explain": "Bổ ngữ trạng thái là thành phần đứng sau động từ để miêu tả trạng thái/mức độ/chất lượng của hành động. Nếu động từ có tân ngữ, phải lặp lại động từ trước 得. Nếu động từ là động từ ly hợp (离合词), phải lặp lại phần động từ trước khi thêm 得.", "formula": "V + 得 + Adj &nbsp;|&nbsp; V + O + V + 得 + Adj &nbsp;|&nbsp; O + V + 得 + Adj", "examples": [{"cn": "他跑得很快。", "py": "Tā pǎo de hěn kuài.", "vn": "Anh ấy chạy rất nhanh."}, {"cn": "她说汉语说得很流利。", "py": "Tā shuō Hànyǔ shuō de hěn liúlì.", "vn": "Cô ấy nói tiếng Trung rất lưu loát."}, {"cn": "他睡觉睡得很早。", "py": "Tā shuìjiào shuì de hěn zǎo.", "vn": "Anh ấy ngủ rất sớm. (động từ ly hợp lặp lại 睡)"}], "sentence_order": [{"vn": "Anh ấy viết chữ Hán rất đẹp.", "words": [{"hz": "他", "py": "tā"}, {"hz": "汉字", "py": "Hànzì"}, {"hz": "写", "py": "xiě"}, {"hz": "得", "py": "de"}, {"hz": "很", "py": "hěn"}, {"hz": "漂亮", "py": "piàoliang"}, {"hz": "。", "py": "."}]}, {"vn": "Tôi lái xe không tốt lắm.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "开车", "py": "kāichē"}, {"hz": "开", "py": "kāi"}, {"hz": "得", "py": "de"}, {"hz": "不太好", "py": "bú tài hǎo"}, {"hz": "。", "py": "."}]}], "fill_blank": {"bank": ["很好听", "不流利", "很快", "不好"], "items": [{"before": "他唱得", "after": "。", "answer": "很好听", "vn": "Anh ấy hát rất hay."}, {"before": "她说得", "after": "。", "answer": "不流利", "vn": "Cô ấy nói không lưu loát."}, {"before": "他跑得", "after": "。", "answer": "很快", "vn": "Anh ấy chạy rất nhanh."}]}, "translate": [{"vn": "Cô ấy bơi rất nhanh.", "accept": ["她游泳游得很快", "她游得很快"], "py": "Tā yóuyǒng yóu de hěn kuài."}]}, {"short": "比字句 (so sánh)", "title": "6. 比字句 — Câu so sánh", "explain": "比 dùng để so sánh 2 người/vật/trạng thái. Không dùng 很/非常 trước tính từ trong câu 比; thay vào đó dùng 还/更 để nhấn mạnh mức độ tăng thêm. Phủ định dùng A没有B(那么/这么)+adj. 比 cũng dùng để so sánh mức độ khi thực hiện hành động (kết hợp với bổ ngữ trạng thái).", "formula": "A 比 B + Adj &nbsp;|&nbsp; A 比 B + 还/更 + Adj &nbsp;|&nbsp; A 没有 B (那么/这么) + Adj &nbsp;|&nbsp; A 比 B + V + 得 + Adj", "examples": [{"cn": "他比我高。", "py": "Tā bǐ wǒ gāo.", "vn": "Anh ấy cao hơn tôi."}, {"cn": "哥哥比我高5厘米。", "py": "Gēge bǐ wǒ gāo wǔ límǐ.", "vn": "Anh trai cao hơn tôi 5cm."}, {"cn": "他比我还高。", "py": "Tā bǐ wǒ hái gāo.", "vn": "Anh ấy còn cao hơn tôi nữa."}, {"cn": "他没有我高。", "py": "Tā méiyǒu wǒ gāo.", "vn": "Anh ấy không cao bằng tôi."}, {"cn": "他比我跑得快。", "py": "Tā bǐ wǒ pǎo de kuài.", "vn": "Anh ấy chạy nhanh hơn tôi."}], "sentence_order": [{"vn": "Táo rẻ hơn chuối một chút.", "words": [{"hz": "苹果", "py": "píngguǒ"}, {"hz": "比", "py": "bǐ"}, {"hz": "香蕉", "py": "xiāngjiāo"}, {"hz": "便宜", "py": "piányi"}, {"hz": "一点儿", "py": "yìdiǎnr"}, {"hz": "。", "py": "."}]}, {"vn": "Tiếng Trung của tôi không tốt như tiếng Trung của cậu.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "的", "py": "de"}, {"hz": "汉语", "py": "Hànyǔ"}, {"hz": "没有", "py": "méiyǒu"}, {"hz": "你", "py": "nǐ"}, {"hz": "的", "py": "de"}, {"hz": "这么", "py": "zhème"}, {"hz": "好", "py": "hǎo"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "A 比 B + Adj + 得多/多了", "hint_vn": "so sánh hơn nhiều", "sample_cn": "今天比昨天凉快多了。", "sample_py": "Jīntiān bǐ zuótiān liángkuai duōle.", "sample_vn": "Hôm nay mát hơn hôm qua nhiều."}], "translate": [{"vn": "Cái cặp màu xanh đẹp hơn cái màu đen.", "accept": ["蓝色的书包比黑色的更好看", "蓝色的书包比黑色的好看"], "py": "Lánsè de shūbāo bǐ hēisè de gèng hǎokàn."}]}, {"short": "虽然……但是……", "title": "7. 虽然……，但是…… — Quan hệ nhượng bộ", "explain": "Là cấu trúc câu phức biểu thị quan hệ nhượng bộ — chuyển ngoặt giữa hai vế câu. 虽然: tuy, mặc dù. 但是: nhưng, nhưng mà.", "formula": "虽然 + Vế 1，但是 + Vế 2", "examples": [{"cn": "虽然今天下雨，但是我们还是去打篮球。", "py": "Suīrán jīntiān xiàyǔ, dànshì wǒmen háishi qù dǎ lánqiú.", "vn": "Mặc dù hôm nay trời mưa nhưng chúng tôi vẫn đi chơi bóng rổ."}, {"cn": "虽然他很忙，但是每天都学习汉语。", "py": "Suīrán tā hěn máng, dànshì měitiān dōu xuéxí Hànyǔ.", "vn": "Mặc dù anh ấy rất bận nhưng ngày nào cũng học tiếng Trung."}], "sentence_order": [{"vn": "Mặc dù trời lạnh nhưng các bạn vẫn đi bơi.", "words": [{"hz": "虽然", "py": "suīrán"}, {"hz": "天气", "py": "tiānqì"}, {"hz": "很冷", "py": "hěn lěng"}, {"hz": "，", "py": "，"}, {"hz": "但是", "py": "dànshì"}, {"hz": "同学们", "py": "tóngxuémen"}, {"hz": "还是", "py": "háishi"}, {"hz": "去", "py": "qù"}, {"hz": "游泳", "py": "yóuyǒng"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "虽然……，但是……", "hint_vn": "nhượng bộ - chuyển ngoặt", "sample_cn": "虽然这件衣服很贵，但是我还是买了。", "sample_py": "Suīrán zhè jiàn yīfu hěn guì, dànshì wǒ háishi mǎile.", "sample_vn": "Mặc dù bộ quần áo này đắt nhưng tôi vẫn mua."}], "translate": [{"vn": "Mặc dù anh ấy bị ốm nhưng vẫn đến lớp.", "accept": ["虽然他生病了但是还是来上课了", "虽然他生病了，但是还是来上课了"], "py": "Suīrán tā shēngbìngle, dànshì háishi lái shàngkèle."}]}, {"short": "因为……所以……", "title": "8. 因为……，所以…… — Quan hệ nguyên nhân-kết quả", "explain": "Là cấu trúc câu phức biểu thị quan hệ nguyên nhân – kết quả. 因为: vì, bởi vì. 所以: nên, vì vậy, cho nên.", "formula": "因为 + Nguyên nhân，所以 + Kết quả", "examples": [{"cn": "因为今天下雨，所以我没去打篮球。", "py": "Yīnwèi jīntiān xiàyǔ, suǒyǐ wǒ méi qù dǎ lánqiú.", "vn": "Vì hôm nay trời mưa nên tôi không đi chơi bóng rổ."}, {"cn": "因为他生病了，所以今天没来上课。", "py": "Yīnwèi tā shēngbìngle, suǒyǐ jīntiān méi lái shàngkè.", "vn": "Vì anh ấy bị ốm nên hôm nay không đến lớp."}], "sentence_order": [{"vn": "Vì hôm qua tuyết rơi nên trời rất lạnh.", "words": [{"hz": "因为", "py": "yīnwèi"}, {"hz": "昨天", "py": "zuótiān"}, {"hz": "下雪了", "py": "xiàxuěle"}, {"hz": "，", "py": "，"}, {"hz": "所以", "py": "suǒyǐ"}, {"hz": "天气", "py": "tiānqì"}, {"hz": "很冷", "py": "hěn lěng"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "因为……，所以……", "hint_vn": "nguyên nhân - kết quả", "sample_cn": "因为我很喜欢中国菜，所以我学做饭。", "sample_py": "Yīnwèi wǒ hěn xǐhuān Zhōngguó cài, suǒyǐ wǒ xué zuòfàn.", "sample_vn": "Vì tôi rất thích món Trung nên tôi học nấu ăn."}], "translate": [{"vn": "Vì trời mưa to nên chúng tôi không đi du lịch.", "accept": ["因为下大雨所以我们没去旅游", "因为下大雨，所以我们没去旅游"], "py": "Yīnwèi xià dàyǔ, suǒyǐ wǒmen méi qù lǚyóu."}]}, {"short": "Bổ ngữ thời lượng", "title": "9. 时量补语 — Bổ ngữ thời lượng", "explain": "Là thành phần đứng sau động từ, chỉ thời gian mà hành động/trạng thái kéo dài. Nếu tân ngữ là danh từ chỉ vật, có 2 cách đặt tân ngữ. Nếu tân ngữ là đại từ nhân xưng/danh từ chỉ người, thời lượng đặt sau tân ngữ. 了 ở cuối câu cho thấy trạng thái vẫn đang tiếp diễn.", "formula": "S + V + (了) + Thời lượng (+O) &nbsp;|&nbsp; S + V + O + V + 了 + Thời lượng &nbsp;|&nbsp; S + V + 了 + người + Thời lượng", "examples": [{"cn": "他们学了两年。", "py": "Tāmen xuéle liǎng nián.", "vn": "Họ đã học được hai năm."}, {"cn": "我看了一个小时书。", "py": "Wǒ kànle yīgè xiǎoshí shū.", "vn": "Tôi đọc sách một tiếng đồng hồ."}, {"cn": "我等了他半个小时。", "py": "Wǒ děngle tā bàn gè xiǎoshí.", "vn": "Tôi đợi anh ấy nửa tiếng."}, {"cn": "我学了两年汉语了。", "py": "Wǒ xuéle liǎng nián Hànyǔ le.", "vn": "Tôi học tiếng Trung được 2 năm rồi (vẫn đang học)."}], "sentence_order": [{"vn": "Chúng tôi nghỉ mười phút.", "words": [{"hz": "我们", "py": "wǒmen"}, {"hz": "休息", "py": "xiūxi"}, {"hz": "十", "py": "shí"}, {"hz": "分钟", "py": "fēnzhōng"}, {"hz": "。", "py": "."}]}, {"vn": "Tôi ngủ tám tiếng đồng hồ.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "睡觉", "py": "shuìjiào"}, {"hz": "睡", "py": "shuì"}, {"hz": "了", "py": "le"}, {"hz": "八", "py": "bā"}, {"hz": "个", "py": "gè"}, {"hz": "小时", "py": "xiǎoshí"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Tôi tìm bạn nửa ngày, bạn đi đâu vậy?", "accept": ["我找了你半天你去哪儿了", "我找了你半天，你去哪儿了？"], "py": "Wǒ zhǎole nǐ bàntiān, nǐ qù nǎ'rle?"}]}, {"short": "离 (khoảng cách)", "title": "10. 离 — Diễn tả khoảng cách", "explain": "离 (lí) nghĩa là 'cách', dùng diễn tả khoảng cách giữa 2 địa điểm/vị trí, hoặc khoảng cách thời gian (còn bao lâu nữa đến một thời điểm/sự kiện).", "formula": "A 离 B 多远/(不)远/近？ &nbsp;|&nbsp; 离 + thời điểm + 还有 + khoảng thời gian", "examples": [{"cn": "你家离公司多远？", "py": "Nǐ jiā lí gōngsī duō yuǎn?", "vn": "Nhà bạn cách công ty bao xa?"}, {"cn": "我家离公司不远。", "py": "Wǒ jiā lí gōngsī bù yuǎn.", "vn": "Nhà tôi cách công ty không xa."}, {"cn": "离春节还有一个月。", "py": "Lí Chūnjié hái yǒu yí ge yuè.", "vn": "Còn một tháng nữa là đến Tết."}], "sentence_order": [{"vn": "Nhà tôi cách công ty rất xa.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "家", "py": "jiā"}, {"hz": "离", "py": "lí"}, {"hz": "公司", "py": "gōngsī"}, {"hz": "很远", "py": "hěn yuǎn"}, {"hz": "。", "py": "."}]}], "fill_blank": {"bank": ["多远", "不远", "还有"], "items": [{"before": "你家离学校", "after": "？", "answer": "多远", "vn": "Nhà bạn cách trường bao xa?"}, {"before": "我家离超市", "after": "。", "answer": "不远", "vn": "Nhà tôi cách siêu thị không xa."}, {"before": "离考试", "after": "三天。", "answer": "还有", "vn": "Còn ba ngày nữa là đến kỳ thi."}]}, "translate": [{"vn": "Nhà bạn cách công ty xa không?", "accept": ["你家离公司远吗"], "py": "Nǐ jiā lí gōngsī yuǎn ma?"}]}, {"short": "还是 / 或者", "title": "11. 还是 / 或者 — Hay là / hoặc", "explain": "还是 dùng trong câu hỏi lựa chọn 'A hay B'. 或者 dùng trong câu trần thuật khi đưa ra các khả năng/lựa chọn (không phải câu hỏi). Cấu trúc S+还是+...+吧 dùng khi người nói đã cân nhắc và cho rằng một lựa chọn phù hợp hơn.", "formula": "A + 还是 + B？(câu hỏi) &nbsp;|&nbsp; A + 或者 + B (trần thuật) &nbsp;|&nbsp; S + 还是 + ... + 吧", "examples": [{"cn": "你喝茶还是喝咖啡？", "py": "Nǐ hē chá háishi hē kāfēi?", "vn": "Bạn uống trà hay cà phê?"}, {"cn": "我想喝茶或者咖啡。", "py": "Wǒ xiǎng hē chá huòzhě kāfēi.", "vn": "Tôi muốn uống trà hoặc cà phê."}, {"cn": "太远了，我们还是打车去吧。", "py": "Tài yuǎnle, wǒmen háishi dǎchē qù ba.", "vn": "Xa quá, chúng ta đi taxi thôi."}], "sentence_order": [{"vn": "Bạn đi xe buýt hay đi tàu điện ngầm?", "words": [{"hz": "你", "py": "nǐ"}, {"hz": "坐", "py": "zuò"}, {"hz": "公交车", "py": "gōngjiāochē"}, {"hz": "还是", "py": "háishi"}, {"hz": "坐", "py": "zuò"}, {"hz": "地铁", "py": "dìtiě"}, {"hz": "？", "py": "?"}]}], "construct": [{"hint": "还是……吧", "hint_vn": "đưa ra lựa chọn sau khi cân nhắc", "sample_cn": "这件衣服太贵了，我还是不买了吧。", "sample_py": "Zhè jiàn yīfu tài guì le, wǒ háishi bù mǎi le ba.", "sample_vn": "Bộ đồ này đắt quá, thôi tôi không mua nữa."}], "translate": [{"vn": "Thứ bảy hoặc chủ nhật đều được.", "accept": ["周六或者周日都可以"], "py": "Zhōuliù huòzhě zhōurì dōu kěyǐ."}]}, {"short": "要……了 (sắp xảy ra)", "title": "12. 要……了 / 快……了 / 快要……了 / 就要……了", "explain": "Đều diễn tả hành động/sự việc/trạng thái sắp xảy ra, tương đương 'sắp...rồi'. 快……了/快要……了 nhấn mạnh sự việc đã rất gần thời điểm xảy ra. 就要……了 nhấn mạnh thời điểm cận kề/xác định, dùng được với mốc thời gian cụ thể (要/快/快要 thì KHÔNG dùng được với trạng ngữ chỉ thời gian cụ thể).", "formula": "要……了 / 快……了 / 快要……了 &nbsp;|&nbsp; (thời gian cụ thể) + 就要……了", "examples": [{"cn": "要下雨了。", "py": "Yào xiàyǔ le.", "vn": "Sắp mưa rồi."}, {"cn": "快要下课了。", "py": "Kuàiyào xiàkèle.", "vn": "Sắp tan học rồi."}, {"cn": "明天就要考试了。", "py": "Míngtiān jiù yào kǎoshìle.", "vn": "Ngày mai là thi rồi."}], "sentence_order": [{"vn": "Tháng sau là tốt nghiệp rồi.", "words": [{"hz": "下", "py": "xià"}, {"hz": "个月", "py": "gè yuè"}, {"hz": "就要", "py": "jiù yào"}, {"hz": "毕业", "py": "bìyè"}, {"hz": "了", "py": "le"}, {"hz": "。", "py": "."}]}], "fill_blank": {"bank": ["要", "快", "快要", "就要"], "items": [{"before": "", "after": "下雨了。（sắp)", "answer": "要", "vn": "Sắp mưa rồi."}, {"before": "", "after": "下课了。（rất gần)", "answer": "快", "vn": "Sắp tan học rồi (rất gần)."}, {"before": "明天", "after": "考试了。（mốc thời gian cụ thể)", "answer": "就要", "vn": "Ngày mai là thi rồi."}]}, "translate": [{"vn": "Sắp mưa rồi, bạn mang theo áo mưa nhé.", "accept": ["要下雨了你带上雨衣吧", "要下雨了，你带上雨衣吧"], "py": "Yào xiàyǔ le, nǐ dài shàng yǔyī ba."}]}, {"short": "吧 (ngữ khí)", "title": "13. 吧 — Trợ từ ngữ khí", "explain": "吧 đứng cuối câu, dùng để biểu thị đề nghị/rủ rê, khuyên nhủ nhẹ nhàng, hoặc phỏng đoán/xác nhận. Tùy ngữ cảnh có thể dịch: nhé, đi, thôi, nào, nhỉ, phải không.", "formula": "Câu + 吧", "examples": [{"cn": "我们去吃韩国菜吧。", "py": "Wǒmen qù chī hánguó cài ba.", "vn": "Chúng ta đi ăn món Hàn nhé!"}, {"cn": "你是越南人吧？", "py": "Nǐ shì Yuènán rén ba?", "vn": "Bạn là người Việt Nam nhỉ?"}, {"cn": "你坐吧。", "py": "Nǐ zuò ba.", "vn": "Bạn ngồi đi."}], "sentence_order": [{"vn": "Bạn uống chút nước đi.", "words": [{"hz": "喝", "py": "hē"}, {"hz": "点儿", "py": "diǎnr"}, {"hz": "水", "py": "shuǐ"}, {"hz": "吧", "py": "ba"}, {"hz": "。", "py": "."}]}], "construct": [{"hint": "吧", "hint_vn": "đề nghị / phỏng đoán", "sample_cn": "你就是他的学生吧？", "sample_py": "Nǐ jiù shì tā de xuésheng ba?", "sample_vn": "Bạn chính là học trò của thầy ấy phải không?"}], "translate": [{"vn": "Chúng ta đi xem phim nhé!", "accept": ["我们去看电影吧"], "py": "Wǒmen qù kàn diànyǐng ba!"}]}, {"short": "是……的", "title": "14. 是……的 — Cấu trúc nhấn mạnh", "explain": "是……的 dùng để nhấn mạnh thời gian, địa điểm, phương thức, người thực hiện, hoặc mục đích của một hành động ĐÃ xảy ra. Trong câu khẳng định/nghi vấn có thể lược bỏ 是; câu phủ định không được lược 是.", "formula": "Chủ ngữ + 是 + Thành phần nhấn mạnh + Động từ + 的", "examples": [{"cn": "你是什么时候回来的？", "py": "Nǐ shì shénme shíhòu huílái de?", "vn": "Bạn về khi nào vậy?"}, {"cn": "我是昨天下午回来的。", "py": "Wǒ shì zuótiān xiàwǔ huílái de.", "vn": "Tôi về chiều hôm qua."}, {"cn": "你是怎么来的？我是开车来的。", "py": "Nǐ shì zěnme lái de? Wǒ shì kāichē lái de.", "vn": "Bạn đến bằng cách nào? Tôi lái xe đến."}], "sentence_order": [{"vn": "Đây là mẹ tôi làm đấy.", "words": [{"hz": "这", "py": "zhè"}, {"hz": "是", "py": "shì"}, {"hz": "我", "py": "wǒ"}, {"hz": "妈妈", "py": "māma"}, {"hz": "做", "py": "zuò"}, {"hz": "的", "py": "de"}, {"hz": "。", "py": "."}]}, {"vn": "Chúng tôi quen nhau ở trường.", "words": [{"hz": "我们", "py": "wǒmen"}, {"hz": "是", "py": "shì"}, {"hz": "在", "py": "zài"}, {"hz": "学校", "py": "xuéxiào"}, {"hz": "认识", "py": "rènshi"}, {"hz": "的", "py": "de"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Bạn đến đây để du lịch à? Không phải, tôi đến để học.", "accept": ["你是来旅游的吗不是我是来学习的", "你是来旅游的吗？不是，我是来学习的。"], "py": "Nǐ shì lái lǚyóu de ma? Bùshì, wǒ shì lái xuéxí de."}]}, {"short": "Bổ ngữ xu hướng đơn", "title": "15. 趋向补语（单）— Bổ ngữ xu hướng đơn", "explain": "Bổ ngữ xu hướng dùng để chỉ phương hướng di chuyển của hành động. 来: về phía người nói. 去: ra xa người nói. Kết hợp với 上/下/进/出/回/过/起 tạo thành V+来/去. Nếu tân ngữ là địa điểm, tân ngữ đặt trước 来/去 (V+O+来/去). Nếu tân ngữ là sự vật, có thể đặt trước hoặc sau 来/去.", "formula": "V + 来/去 &nbsp;|&nbsp; V + O(địa điểm) + 来/去 &nbsp;|&nbsp; V + O(vật) + 来/去 hoặc V + 来/去 + O(vật)", "examples": [{"cn": "你出来吧，我有事想跟你说。", "py": "Nǐ chūlái ba, wǒ yǒushì xiǎng gēn nǐ shuō.", "vn": "Bạn ra đây đi, tôi có chuyện muốn nói với bạn."}, {"cn": "上课了，你们快进教室来吧。", "py": "Shàngkèle, nǐmen kuài jìn jiàoshì lái ba.", "vn": "Vào học rồi, các em mau vào lớp đi."}, {"cn": "她拿来一本中文书。", "py": "Tā ná lái yī běn Zhōngwén shū.", "vn": "Cô ấy mang đến một quyển sách tiếng Trung."}], "sentence_order": [{"vn": "Tiểu Minh, bạn qua đây một chút.", "words": [{"hz": "小明", "py": "Xiǎomíng"}, {"hz": "，", "py": "，"}, {"hz": "你", "py": "nǐ"}, {"hz": "过来", "py": "guòlái"}, {"hz": "一下", "py": "yīxià"}, {"hz": "。", "py": "."}]}, {"vn": "Bố mua về rất nhiều trái cây.", "words": [{"hz": "爸爸", "py": "bàba"}, {"hz": "买", "py": "mǎi"}, {"hz": "回", "py": "huí"}, {"hz": "了", "py": "le"}, {"hz": "很多", "py": "hěnduō"}, {"hz": "水果", "py": "shuǐguǒ"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Tôi không lên nữa, tôi đợi bạn ở dưới nhé?", "accept": ["我不上去了就在下面等你", "我不上去了，就在下面等你？"], "py": "Wǒ bù shàngqùle, jiù zài xiàmiàn děng nǐ?"}]}, {"short": "Bổ ngữ xu hướng kép", "title": "16. 趋向补语（双）— Bổ ngữ xu hướng kép", "explain": "Các động từ 上/下/进/出/回/过 kết hợp thêm 来/去 (hoặc 起来) đặt sau động từ chính, tạo bổ ngữ xu hướng kép, chỉ phương hướng cụ thể hơn của hành động. Nếu tân ngữ là địa điểm: V+O+来/去. Nếu tân ngữ là sự vật: V+O+来/去 hoặc V+来/去+O.", "formula": "V + 上来/下来/出来/进来/回来/过来/起来 (hoặc +去)", "examples": [{"cn": "小明跑上去了。", "py": "Xiǎomíng pǎo shàngqùle.", "vn": "Tiểu Minh chạy lên rồi."}, {"cn": "小狗一看见爸爸就跑过来。", "py": "Xiǎo gǒu yī kànjiàn bàba jiù pǎo guòlái.", "vn": "Chú chó vừa thấy bố là chạy lại ngay."}, {"cn": "妈妈让我买回一些菜来。", "py": "Māma ràng wǒ mǎi huí yīxiē cài lái.", "vn": "Mẹ bảo tôi mua ít rau về."}], "sentence_order": [{"vn": "Tiểu Minh chạy lên lầu rồi.", "words": [{"hz": "小明", "py": "Xiǎomíng"}, {"hz": "跑", "py": "pǎo"}, {"hz": "上", "py": "shàng"}, {"hz": "楼", "py": "lóu"}, {"hz": "来", "py": "lái"}, {"hz": "了", "py": "le"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Tôi đi bộ về đấy.", "accept": ["我是走回来的"], "py": "Wǒ shì zǒu huílái de."}]}, {"short": "Bổ ngữ động lượng", "title": "17. 动量补语 — Bổ ngữ động lượng", "explain": "Dùng để chỉ số lần diễn ra của động tác, gồm số từ + động lượng từ như 次/遍/趟/下. Trợ từ 了/过 đặt sau động từ và trước bổ ngữ động lượng. Nếu tân ngữ chỉ người, đặt trước bổ ngữ động lượng; nếu tân ngữ chỉ vật/nơi chốn, có thể đặt trước hoặc sau bổ ngữ động lượng.", "formula": "S+V+(了/过)+BN động lượng(+O) &nbsp;|&nbsp; S+V+(了/过)+O(người)+BN động lượng", "examples": [{"cn": "我去过一次。", "py": "Wǒ qùguò yīcì.", "vn": "Tôi từng đi một lần."}, {"cn": "我找了她三次。", "py": "Wǒ zhǎole tā sāncì.", "vn": "Tôi tìm cô ấy ba lần."}, {"cn": "我去过中国两次。", "py": "Wǒ qùguò Zhōngguó liǎng cì.", "vn": "Tôi từng đi Trung Quốc hai lần."}], "sentence_order": [{"vn": "Tôi từng ăn vịt quay ba lần.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "吃", "py": "chī"}, {"hz": "过", "py": "guò"}, {"hz": "三次", "py": "sāncì"}, {"hz": "烤鸭", "py": "kǎoyā"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Tôi từng uống trà sữa một lần.", "accept": ["我喝过一次奶茶"], "py": "Wǒ hēguò yīcì nǎichá."}]}, {"short": "有 + số lượng / 多", "title": "18. 有 + số lượng / Phó từ 多", "explain": "'有 + số lượng' biểu thị một số lượng nhất định (đã đạt tới). Phó từ 多 dùng trong câu cảm thán, biểu thị mức độ rất cao ('biết bao', 'quá', 'thật là'), bộc lộ cảm xúc khen ngợi/ngạc nhiên/tiếc nuối.", "formula": "有 + số lượng: S + 有 + số + đơn vị (+了) &nbsp;|&nbsp; S + 多 + Adj (+啊/呀)", "examples": [{"cn": "你有一年没回国了吧？", "py": "Nǐ yǒu yī nián méi huíguó le ba?", "vn": "Bạn đã 1 năm không về nước rồi phải không?"}, {"cn": "你女儿今年有10岁了吗？", "py": "Nǐ nǚ'ér jīnnián yǒu 10 suì le ma?", "vn": "Con gái bạn năm nay được 10 tuổi chưa?"}, {"cn": "多好看啊！买这件吧。", "py": "Duō hǎokàn a! Mǎi zhè jiàn ba.", "vn": "Đẹp quá! Mua cái này đi."}], "sentence_order": [{"vn": "Chúng mình cùng đi thì hay biết mấy!", "words": [{"hz": "我们", "py": "wǒmen"}, {"hz": "一起", "py": "yīqǐ"}, {"hz": "去", "py": "qù"}, {"hz": "多", "py": "duō"}, {"hz": "好", "py": "hǎo"}, {"hz": "啊", "py": "a"}, {"hz": "！", "py": "!"}]}], "translate": [{"vn": "Bạn ở đây một mình thì chán lắm!", "accept": ["你一个人在这儿多没意思啊"], "py": "Nǐ yīgè rén zài zhè'r duō méiyìsi a!"}]}, {"short": "着 (động thái)", "title": "19. 着 — Trợ từ động thái", "explain": "着 (zhe) dùng sau động từ, biểu thị sự tiếp diễn của hành động/trạng thái. Nếu câu có tân ngữ, tân ngữ đặt sau 着. 着 còn dùng khi 2 hành động xảy ra cùng lúc (V1着V2 — hành động đi kèm), và trong câu tồn hiện (Địa điểm+V+着+Người/Vật) để diễn tả sự hiện diện.", "formula": "V + 着 (+O) &nbsp;|&nbsp; V1 + 着 + V2 &nbsp;|&nbsp; Địa điểm + V + 着 + Người/Vật", "examples": [{"cn": "教室的门开着。", "py": "Jiàoshì de mén kāizhe.", "vn": "Cửa lớp học đang mở."}, {"cn": "她看着电视吃饭。", "py": "Tā kànzhe diànshì chīfàn.", "vn": "Cô ấy vừa xem tivi vừa ăn cơm."}, {"cn": "你家楼下站着一个人。", "py": "Nǐ jiā lóu xià zhànzhe yīgè rén.", "vn": "Dưới nhà bạn có một người đang đứng."}], "sentence_order": [{"vn": "Bên ngoài trời đang có tuyết rơi.", "words": [{"hz": "外边", "py": "wàibian"}, {"hz": "下", "py": "xià"}, {"hz": "着", "py": "zhe"}, {"hz": "雪", "py": "xuě"}, {"hz": "。", "py": "."}]}, {"vn": "Cô giáo đứng, các bạn học sinh ngồi.", "words": [{"hz": "老师", "py": "lǎoshī"}, {"hz": "站", "py": "zhàn"}, {"hz": "着", "py": "zhe"}, {"hz": "，", "py": "，"}, {"hz": "同学们", "py": "tóngxuémen"}, {"hz": "坐", "py": "zuò"}, {"hz": "着", "py": "zhe"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Cô bé mặc chiếc quần trắng.", "accept": ["小花穿着白色的裤子"], "py": "Xiǎohuā chuānzhe báisè de kùzi."}]}, {"short": "最 / 多 (ước lượng)", "title": "20. 最 (trạng từ mức độ) / 多 (ước lượng)", "explain": "最 đứng trước tính từ hoặc động từ tâm lý (喜欢, 担心...), biểu thị mức độ vượt hơn tất cả, tức 'nhất'. Phó từ 多 (đặt sau số từ) dùng biểu thị số lượng xấp xỉ, hơn một chút — số + 多 + lượng từ (nếu số là bội của 10) hoặc số + lượng từ + 多 (nếu không phải bội của 10).", "formula": "最 + V/Adj &nbsp;|&nbsp; Số(bội 10) + 多 + Lượng từ &nbsp;|&nbsp; Số(không phải bội 10) + Lượng từ + 多", "examples": [{"cn": "我最喜欢打羽毛球。", "py": "Wǒ zuì xǐhuān dǎ yǔmáoqiú.", "vn": "Tôi thích chơi cầu lông nhất."}, {"cn": "他二十多岁。", "py": "Tā èrshí duō suì.", "vn": "Anh ấy hơn 20 tuổi."}, {"cn": "我有一百多本书。", "py": "Wǒ yǒu yìbǎi duō běn shū.", "vn": "Tôi có hơn 100 quyển sách."}], "sentence_order": [{"vn": "Trong nhà tôi, bố cao nhất.", "words": [{"hz": "在", "py": "zài"}, {"hz": "我们", "py": "wǒmen"}, {"hz": "家", "py": "jiā"}, {"hz": "，", "py": "，"}, {"hz": "爸爸", "py": "bàba"}, {"hz": "最", "py": "zuì"}, {"hz": "高", "py": "gāo"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Hai quả táo này hơn 5 tệ.", "accept": ["这两个苹果五块多钱", "这两个苹果五块多钱。"], "py": "Zhè liǎng gè píngguǒ wǔ kuài duō qián."}]}, {"short": "Động từ lặp lại", "title": "21. 动词重叠 — Động từ lặp lại", "explain": "Động từ lặp lại diễn tả: hành động diễn ra trong thời gian ngắn, thực hiện thử/một chút, ngữ khí nhẹ nhàng thân mật — thường dùng trong khẩu ngữ. Khi diễn tả hành động ĐÃ xảy ra, dạng lặp thay đổi khác đi (thêm 了).", "formula": "Đơn âm: A→AA &nbsp;|&nbsp; Song âm: AB→ABAB &nbsp;|&nbsp; Ly hợp: AB→AAB &nbsp;&nbsp;(Đã xảy ra: A→A了A, AB→AB了一下, AB→A了AB)", "examples": [{"cn": "我再想想吧。", "py": "Wǒ zài xiǎngxiǎng ba.", "vn": "Để tôi nghĩ thêm chút đã."}, {"cn": "我们再讨论讨论。", "py": "Wǒmen zài tǎolùn tǎolùn.", "vn": "Chúng ta bàn bạc thêm nhé."}, {"cn": "你能过来帮帮忙吗？", "py": "Nǐ néng guòlái bāngbāngmáng ma?", "vn": "Bạn qua giúp một tay được không?"}, {"cn": "他看了看。", "py": "Tā kànle kàn.", "vn": "Anh ấy nhìn thử một chút."}], "sentence_order": [{"vn": "Chúng ta đi dạo một chút nhé.", "words": [{"hz": "我们", "py": "wǒmen"}, {"hz": "去", "py": "qù"}, {"hz": "散散步", "py": "sànsànbù"}, {"hz": "吧", "py": "ba"}, {"hz": "。", "py": "."}]}, {"vn": "Tôi nghỉ một chút, giờ đỡ nhiều rồi.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "休息", "py": "xiūxi"}, {"hz": "了", "py": "le"}, {"hz": "一下", "py": "yīxià"}, {"hz": "，", "py": "，"}, {"hz": "现在", "py": "xiànzài"}, {"hz": "好", "py": "hǎo"}, {"hz": "多了", "py": "duōle"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Để tôi hỏi thử thầy giáo.", "accept": ["我问问老师"], "py": "Wǒ wènwèn lǎoshī."}]}, {"short": "Bổ ngữ kết quả", "title": "22. 结果补语 — Bổ ngữ kết quả", "explain": "Bổ ngữ kết quả là thành phần đứng sau động từ/tính từ, chỉ rõ kết quả của hành động sau khi hành động được thực hiện (ví dụ: 写→写完 viết xong, 找→找到 tìm thấy). Phủ định dùng 没.", "formula": "V + BNKQ (+O) &nbsp;|&nbsp; 没 + V + BNKQ (+O)", "examples": [{"cn": "我做完了。", "py": "Wǒ zuò wánle.", "vn": "Tôi làm xong rồi."}, {"cn": "饭菜都做好了。", "py": "Fàncài dōu zuò hǎole.", "vn": "Cơm nước đã nấu xong hết rồi."}, {"cn": "我没喝完奶茶。", "py": "Wǒ méi hē wán nǎichá.", "vn": "Tôi chưa uống hết trà sữa."}], "sentence_order": [{"vn": "Anh ấy đến muộn rồi.", "words": [{"hz": "他", "py": "tā"}, {"hz": "来", "py": "lái"}, {"hz": "晚", "py": "wǎn"}, {"hz": "了", "py": "le"}, {"hz": "。", "py": "."}]}, {"vn": "Tôi không nghe hiểu lời thầy giáo nói.", "words": [{"hz": "我", "py": "wǒ"}, {"hz": "没", "py": "méi"}, {"hz": "听", "py": "tīng"}, {"hz": "懂", "py": "dǒng"}, {"hz": "老师", "py": "lǎoshī"}, {"hz": "说", "py": "shuō"}, {"hz": "的话", "py": "de huà"}, {"hz": "。", "py": "."}]}], "translate": [{"vn": "Bạn uống hết trà sữa chưa?", "accept": ["你喝完奶茶了吗"], "py": "Nǐ hē wán nǎichále ma?"}]}, {"short": "过 (từng trải nghiệm)", "title": "23. 过 — Trợ từ động thái (kinh nghiệm)", "explain": "过 đứng sau động từ, biểu thị hành động/trải nghiệm đã từng xảy ra trong quá khứ, không còn tiếp diễn đến hiện tại — người nói muốn nhấn mạnh đã TỪNG có trải nghiệm đó. Phủ định dùng 没 (không dùng 没有…过…了).", "formula": "S + V + 过 (+O) &nbsp;|&nbsp; S + 没 + V + 过 (+O)", "examples": [{"cn": "我去过中国。", "py": "Wǒ qùguò Zhōngguó.", "vn": "Tôi từng đi Trung Quốc."}, {"cn": "我吃过北京烤鸭。", "py": "Wǒ chīguò Běijīng kǎoyā.", "vn": "Tôi từng ăn vịt quay Bắc Kinh."}, {"cn": "我没去过中国。", "py": "Wǒ méi qùguò Zhōngguó.", "vn": "Tôi chưa từng đi Trung Quốc."}], "sentence_order": [{"vn": "Bạn từng xem bộ phim đó chưa?", "words": [{"hz": "你", "py": "nǐ"}, {"hz": "看", "py": "kàn"}, {"hz": "过", "py": "guò"}, {"hz": "那部", "py": "nà bù"}, {"hz": "电影", "py": "diànyǐng"}, {"hz": "吗", "py": "ma"}, {"hz": "？", "py": "?"}]}], "translate": [{"vn": "Tôi chưa từng uống trà sữa.", "accept": ["我没喝过奶茶"], "py": "Wǒ méi hēguò nǎichá."}]}];
+const CAPSTONE_MATCH = [{"cn": "她的脸红红的。", "py": "Tā de liǎn hónghóng de.", "vn": "Mặt cô ấy đỏ hồng."}, {"cn": "我一下课就回家了。", "py": "Wǒ yī xiàkè jiù huíjiā le.", "vn": "Tôi vừa tan học là về nhà."}, {"cn": "他比我还高。", "py": "Tā bǐ wǒ hái gāo.", "vn": "Anh ấy còn cao hơn tôi nữa."}, {"cn": "虽然今天下雨，但是我们还是去打篮球。", "py": "Suīrán jīntiān xiàyǔ, dànshì wǒmen háishi qù dǎ lánqiú.", "vn": "Mặc dù trời mưa nhưng chúng tôi vẫn đi chơi bóng rổ."}, {"cn": "因为他生病了，所以今天没来上课。", "py": "Yīnwèi tā shēngbìngle, suǒyǐ jīntiān méi lái shàngkè.", "vn": "Vì anh ấy bị ốm nên hôm nay không đến lớp."}, {"cn": "你家离公司多远？", "py": "Nǐ jiā lí gōngsī duō yuǎn?", "vn": "Nhà bạn cách công ty bao xa?"}, {"cn": "你喝茶还是喝咖啡？", "py": "Nǐ hē chá háishi hē kāfēi?", "vn": "Bạn uống trà hay cà phê?"}, {"cn": "快要下课了。", "py": "Kuàiyào xiàkèle.", "vn": "Sắp tan học rồi."}, {"cn": "你是什么时候回来的？", "py": "Nǐ shì shénme shíhòu huílái de?", "vn": "Bạn về khi nào vậy?"}, {"cn": "你出来吧，我有事想跟你说。", "py": "Nǐ chūlái ba, wǒ yǒushì xiǎng gēn nǐ shuō.", "vn": "Bạn ra đây đi, tôi có chuyện muốn nói."}, {"cn": "我去过中国两次。", "py": "Wǒ qùguò Zhōngguó liǎng cì.", "vn": "Tôi từng đi Trung Quốc hai lần."}, {"cn": "教室的门开着。", "py": "Jiàoshì de mén kāizhe.", "vn": "Cửa lớp học đang mở."}, {"cn": "我最喜欢打羽毛球。", "py": "Wǒ zuì xǐhuān dǎ yǔmáoqiú.", "vn": "Tôi thích chơi cầu lông nhất."}, {"cn": "你能过来帮帮忙吗？", "py": "Nǐ néng guòlái bāngbāngmáng ma?", "vn": "Bạn qua giúp một tay được không?"}, {"cn": "我没喝完奶茶。", "py": "Wǒ méi hē wán nǎichá.", "vn": "Tôi chưa uống hết trà sữa."}];
+const CAPSTONE_TF = [{"cn": "她的脸很红红的。", "py": "Tā de liǎn hěn hónghóng de.", "correct": false, "explain": "Sai — tính từ đã lặp lại (红红) thì KHÔNG dùng thêm phó từ mức độ 很/非常 phía trước. Câu đúng: 她的脸红红的。"}, {"cn": "他比我很高。", "py": "Tā bǐ wǒ hěn gāo.", "correct": false, "explain": "Sai — trong câu 比 không dùng 很/非常 trước tính từ. Câu đúng: 他比我高 / 他比我还高。"}, {"cn": "我没去过中国。", "py": "Wǒ méi qùguò Zhōngguó.", "correct": true, "explain": "Đúng — phủ định của 过 dùng 没 + V + 过, không dùng 不。"}, {"cn": "虽然他很忙，所以每天都学习汉语。", "py": "Suīrán tā hěn máng, suǒyǐ měitiān dōu xuéxí Hànyǔ.", "correct": false, "explain": "Sai — 虽然 phải đi cùng 但是 (nhượng bộ), không phải 所以 (đó là cặp của 因为...所以...). Câu đúng: 虽然他很忙，但是每天都学习汉语。"}, {"cn": "她说汉语说得很流利。", "py": "Tā shuō Hànyǔ shuō de hěn liúlì.", "correct": true, "explain": "Đúng — động từ có tân ngữ (说汉语) thì phải lặp lại động từ trước 得: V+O+V+得+Adj."}, {"cn": "你是什么时候回来？", "py": "Nǐ shì shénme shíhòu huílái?", "correct": false, "explain": "Sai — thiếu 的 ở cuối câu. Cấu trúc 是……的 phải có 的 khi nhấn mạnh thời gian/địa điểm của hành động đã xảy ra. Câu đúng: 你是什么时候回来的？"}, {"cn": "我在家等着你呢。", "py": "Wǒ zài jiā děngzhe nǐ ne.", "correct": true, "explain": "Đúng — 着 biểu thị trạng thái đang tiếp diễn, dùng đúng cấu trúc V+着."}, {"cn": "我不上去了，就在下面等你。", "py": "Wǒ bù shàngqùle, jiù zài xiàmiàn děng nǐ.", "correct": true, "explain": "Đúng — bổ ngữ xu hướng 上去 dùng đúng, 去 vì di chuyển ra xa người nói."}, {"cn": "他二十多岁个人。", "py": "—", "correct": false, "explain": "Sai — trật tự từ sai. Với số là bội của 10, cấu trúc là Số+多+Lượng từ: 二十多岁 (không thêm 个人 phía sau)."}, {"cn": "太远了，我们或者打车去吧。", "py": "Tài yuǎnle, wǒmen huòzhě dǎchē qù ba.", "correct": false, "explain": "Sai — nên dùng 还是 (không phải 或者) trong cấu trúc đề xuất S+还是+…+吧. Câu đúng: 太远了，我们还是打车去吧。"}];
+
+const tocBar = document.getElementById('tocBar');
+const mainContent = document.getElementById('mainContent');
+
+TOPICS.forEach((t, idx) => {
+  const a = document.createElement('a');
+  a.href = `#topic-${idx+1}`;
+  a.textContent = `${idx+1}. ${t.short}`;
+  tocBar.appendChild(a);
+});
+
+function renderExplain(container, t){
+  const card = document.createElement('div');
+  card.className = 'explain-card';
+  let html = `<p>${t.explain}</p>`;
+  if(t.formula) html += `<div class="formula">${t.formula}</div>`;
+  t.examples.forEach(e=>{
+    html += `<div class="example-line"><div class="cn">${e.cn}</div><div class="py">${e.py}</div><div class="vn">${e.vn}</div></div>`;
+  });
+  card.innerHTML = html;
+  container.appendChild(card);
+}
+
+function renderSentenceOrder(container, exArr, idPrefix){
+  if(!exArr || !exArr.length) return;
+  const box = document.createElement('div');
+  box.className = 'ex-box';
+  box.innerHTML = `<h4>🔀 Sắp xếp câu</h4><div class="ex-desc">Bấm vào các từ theo đúng thứ tự để tạo thành câu hoàn chỉnh.</div><div class="sot-container"></div>`;
+  container.appendChild(box);
+  const sotContainer = box.querySelector('.sot-container');
+
+  exArr.forEach((s, idx)=>{
+    const wrap = document.createElement('div');
+    wrap.style.marginBottom = '14px';
+    wrap.innerHTML = `
+      <div style="margin-bottom:5px; color:#8a4b00; font-weight:600; font-size:13.5px;">${s.vn}</div>
+      <div class="chip-answer" id="${idPrefix}-answer-${idx}"></div>
+      <div class="chip-bank" id="${idPrefix}-bank-${idx}"></div>
+      <div class="task-controls">
+        <button class="btn" data-action="check" data-idx="${idx}">Kiểm tra</button>
+        <button class="btn secondary" data-action="reset" data-idx="${idx}">Làm lại</button>
+      </div>
+      <div class="feedback" id="${idPrefix}-feedback-${idx}"></div>
+    `;
+    sotContainer.appendChild(wrap);
+    renderBank(idx);
+  });
+
+  function renderBank(idx){
+    const s = exArr[idx];
+    const bank = document.getElementById(`${idPrefix}-bank-${idx}`);
+    const answer = document.getElementById(`${idPrefix}-answer-${idx}`);
+    bank.innerHTML=''; answer.innerHTML='';
+    const shuffled = s.words.map((w,i)=>({...w,origIndex:i})).sort(()=>Math.random()-0.5);
+    shuffled.forEach(w=>{
+      const chip = document.createElement('div');
+      chip.className='chip'; chip.dataset.idx=w.origIndex;
+      chip.innerHTML = `${w.hz}<span class="py-tag">${w.py}</span>`;
+      chip.addEventListener('click',()=>{
+        if(chip.classList.contains('used')) return;
+        chip.classList.add('used');
+        const ansChip = chip.cloneNode(true);
+        ansChip.classList.remove('used');
+        ansChip.addEventListener('click',()=>{
+          answer.removeChild(ansChip);
+          chip.classList.remove('used');
+        });
+        answer.appendChild(ansChip);
+      });
+      bank.appendChild(chip);
+    });
+  }
+
+  sotContainer.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button[data-action]');
+    if(!btn) return;
+    const idx = parseInt(btn.dataset.idx);
+    if(btn.dataset.action==='check'){
+      const s = exArr[idx];
+      const answer = document.getElementById(`${idPrefix}-answer-${idx}`);
+      const chips = [...answer.children].map(c=>parseInt(c.dataset.idx));
+      const correct = chips.length===s.words.length && chips.every((v,i)=>v===i);
+      const fb = document.getElementById(`${idPrefix}-feedback-${idx}`);
+      if(correct){
+        fb.textContent = `✅ Chính xác! ${s.words.map(w=>w.hz).join('')}`;
+        fb.className='feedback ok';
+      } else {
+        fb.textContent = `❌ Chưa đúng, thử lại nhé.`;
+        fb.className='feedback no';
+      }
+    } else if(btn.dataset.action==='reset'){
+      document.getElementById(`${idPrefix}-feedback-${idx}`).textContent='';
+      renderBank(idx);
+    }
+  });
+}
+
+function normalizeCn(s){
+  return s.replace(/[，,。.！!？?\s]/g,'');
+}
+
+function renderTranslate(container, exArr, idPrefix){
+  if(!exArr || !exArr.length) return;
+  const box = document.createElement('div');
+  box.className = 'ex-box';
+  box.innerHTML = `<h4>🌐 Dịch câu</h4><div class="ex-desc">Dịch câu tiếng Việt sau sang tiếng Trung (gõ chữ Hán).</div>`;
+  exArr.forEach((item,idx)=>{
+    const line = document.createElement('div');
+    line.style.marginBottom = '12px';
+    line.innerHTML = `
+      <div style="font-size:14px; margin-bottom:5px;"><b>VN:</b> ${item.vn}</div>
+      <input type="text" id="${idPrefix}-tr-${idx}" placeholder="Nhập câu tiếng Trung...">
+      <div class="task-controls">
+        <button class="btn" data-tridx="${idx}">Kiểm tra</button>
+      </div>
+      <div class="feedback" id="${idPrefix}-trfb-${idx}"></div>
+    `;
+    box.appendChild(line);
+  });
+  container.appendChild(box);
+  box.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button[data-tridx]');
+    if(!btn) return;
+    const idx = btn.dataset.tridx;
+    const item = exArr[idx];
+    const val = normalizeCn(document.getElementById(`${idPrefix}-tr-${idx}`).value.trim());
+    const accepted = item.accept.map(normalizeCn);
+    const fb = document.getElementById(`${idPrefix}-trfb-${idx}`);
+    if(accepted.includes(val)){
+      fb.textContent = '✅ Chính xác!';
+      fb.className = 'feedback ok';
+    } else {
+      fb.textContent = `❌ Chưa đúng. Đáp án gợi ý: ${item.accept[0]} (${item.py})`;
+      fb.className = 'feedback no';
+    }
+  });
+}
+
+function renderConstruct(container, exArr, idPrefix){
+  if(!exArr || !exArr.length) return;
+  const box = document.createElement('div');
+  box.className = 'ex-box';
+  box.innerHTML = `<h4>✍️ Đặt câu với điểm ngữ pháp</h4><div class="ex-desc">Dùng từ/cấu trúc gợi ý để đặt 1 câu hoàn chỉnh của riêng bạn.</div>`;
+  exArr.forEach((item,idx)=>{
+    const line = document.createElement('div');
+    line.style.marginBottom = '12px';
+    line.innerHTML = `
+      <div style="font-size:14px; margin-bottom:5px;">Gợi ý: <b>${item.hint}</b> — <i>${item.hint_vn}</i></div>
+      <textarea id="${idPrefix}-dc-${idx}" rows="2" placeholder="Viết câu của bạn ở đây..."></textarea>
+      <div class="task-controls">
+        <button class="btn" data-dcidx="${idx}">Xem đáp án mẫu</button>
+      </div>
+      <div class="sample-answer" id="${idPrefix}-dcsample-${idx}">
+        <b>Ví dụ:</b> ${item.sample_cn}<br><span style="color:var(--muted);">${item.sample_py}</span><br>${item.sample_vn}
+      </div>
+    `;
+    box.appendChild(line);
+  });
+  container.appendChild(box);
+  box.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button[data-dcidx]');
+    if(!btn) return;
+    document.getElementById(`${idPrefix}-dcsample-${btn.dataset.dcidx}`).classList.toggle('show');
+  });
+}
+
+function renderFillBlank(container, bank, items, idPrefix){
+  if(!items || !items.length) return;
+  const box = document.createElement('div');
+  box.className = 'ex-box';
+  box.innerHTML = `<h4>📝 Điền từ vào chỗ trống</h4><div class="ex-desc">Chọn từ thích hợp trong khung từ cho sẵn để điền vào chỗ trống.</div>`;
+  const bankDiv = document.createElement('div');
+  bankDiv.className = 'chip-bank';
+  bankDiv.style.marginBottom = '10px';
+  bank.forEach(w=>{
+    const c = document.createElement('div');
+    c.className = 'wordbank-chip';
+    c.textContent = w;
+    bankDiv.appendChild(c);
+  });
+  box.appendChild(bankDiv);
+  items.forEach((item,idx)=>{
+    const fi = document.createElement('div');
+    fi.className = 'fill-item';
+    fi.innerHTML = `
+      <div class="fill-sentence">${item.before}<input type="text" id="${idPrefix}-fb-${idx}">${item.after}</div>
+      <div class="fill-vn">${item.vn}</div>
+      <div class="task-controls">
+        <button class="btn" data-fidx="${idx}" data-fanswer="${item.answer}">Kiểm tra</button>
+        <span class="feedback" id="${idPrefix}-fbfb-${idx}"></span>
+      </div>
+    `;
+    box.appendChild(fi);
+  });
+  container.appendChild(box);
+  box.addEventListener('click',(e)=>{
+    const btn = e.target.closest('button[data-fidx]');
+    if(!btn) return;
+    const idx = btn.dataset.fidx;
+    const val = document.getElementById(`${idPrefix}-fb-${idx}`).value.trim();
+    const fb = document.getElementById(`${idPrefix}-fbfb-${idx}`);
+    if(val === btn.dataset.fanswer){ fb.textContent='✅'; fb.className='feedback ok'; }
+    else { fb.textContent=`❌ (${btn.dataset.fanswer})`; fb.className='feedback no'; }
+  });
+}
+
+// Render all topics
+TOPICS.forEach((t, idx) => {
+  const section = document.createElement('div');
+  section.className = 'topic-block';
+  section.id = `topic-${idx+1}`;
+  section.innerHTML = `<div class="topic-num">Điểm ${idx+1}/${TOPICS.length}</div><h2 class="topic-title">${t.title}</h2>`;
+  mainContent.appendChild(section);
+  renderExplain(section, t);
+  const idp = `t${idx+1}`;
+  if(t.sentence_order) renderSentenceOrder(section, t.sentence_order, idp+'so');
+  if(t.fill_blank) renderFillBlank(section, t.fill_blank.bank, t.fill_blank.items, idp+'fb');
+  if(t.construct) renderConstruct(section, t.construct, idp+'dc');
+  if(t.translate) renderTranslate(section, t.translate, idp+'tr');
+});
+
+// Capstone: Noi cau tong hop
+const capTitle1 = document.createElement('div');
+capTitle1.className = 'capstone-title';
+capTitle1.textContent = '🔗 ÔN TẬP TỔNG HỢP — NỐI CÂU';
+mainContent.appendChild(capTitle1);
+const capSub1 = document.createElement('div');
+capSub1.className = 'capstone-sub';
+capSub1.textContent = 'Ghép câu tiếng Trung với nghĩa tiếng Việt tương ứng — tổng hợp từ nhiều điểm ngữ pháp đã học.';
+mainContent.appendChild(capSub1);
+
+const matchBox = document.createElement('div');
+matchBox.className = 'ex-box';
+matchBox.innerHTML = `<div class="match-wrap"><div class="match-col" id="capMatchLeft"></div><div class="match-col" id="capMatchRight"></div></div><div class="progress-note" id="capMatchProgress"></div>`;
+mainContent.appendChild(matchBox);
+
+function buildMatching(leftId, rightId, progressId, data){
+  const state = {selLeft:null, selRight:null, correctCount:0};
+  const leftCol = document.getElementById(leftId);
+  const rightCol = document.getElementById(rightId);
+  leftCol.innerHTML=''; rightCol.innerHTML='';
+  const dataWithId = data.map((w,i)=>({...w,id:i}));
+  const shuffledRight = [...dataWithId].sort(()=>Math.random()-0.5);
+  dataWithId.forEach(w=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.dataset.id=w.id;
+    el.innerHTML = `${w.cn}${w.py ? `<span class="py-tag">${w.py}</span>` : ''}`;
+    el.addEventListener('click',()=>selectMatch(el,'left',w.id));
+    leftCol.appendChild(el);
+  });
+  shuffledRight.forEach(w=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.dataset.id=w.id;
+    el.textContent = w.vn;
+    el.addEventListener('click',()=>selectMatch(el,'right',w.id));
+    rightCol.appendChild(el);
+  });
+  document.getElementById(progressId).textContent = `Đã ghép đúng: 0 / ${data.length}`;
+
+  function selectMatch(el, side, id){
+    if(el.classList.contains('correct')) return;
+    if(side==='left'){
+      if(state.selLeft) state.selLeft.classList.remove('selected');
+      state.selLeft = el; el.classList.add('selected');
+    } else {
+      if(state.selRight) state.selRight.classList.remove('selected');
+      state.selRight = el; el.classList.add('selected');
+    }
+    if(state.selLeft && state.selRight){
+      const l=state.selLeft, r=state.selRight;
+      if(l.dataset.id === r.dataset.id){
+        l.classList.add('correct'); r.classList.add('correct');
+        l.classList.remove('selected'); r.classList.remove('selected');
+        state.correctCount++;
+        document.getElementById(progressId).textContent = `Đã ghép đúng: ${state.correctCount} / ${data.length}`;
+      } else {
+        l.classList.add('wrong'); r.classList.add('wrong');
+        setTimeout(()=>{l.classList.remove('wrong','selected'); r.classList.remove('wrong','selected');},400);
+      }
+      state.selLeft=null; state.selRight=null;
+    }
+  }
+}
+buildMatching('capMatchLeft','capMatchRight','capMatchProgress', CAPSTONE_MATCH);
+
+// Capstone: Dung/Sai
+const capTitle2 = document.createElement('div');
+capTitle2.className = 'capstone-title';
+capTitle2.textContent = '✅❌ ÔN TẬP TỔNG HỢP — ĐÚNG HAY SAI?';
+mainContent.appendChild(capTitle2);
+const capSub2 = document.createElement('div');
+capSub2.className = 'capstone-sub';
+capSub2.textContent = 'Đọc câu và cho biết cấu trúc ngữ pháp trong câu đúng hay sai.';
+mainContent.appendChild(capSub2);
+
+const tfBox = document.createElement('div');
+tfBox.className = 'ex-box';
+mainContent.appendChild(tfBox);
+CAPSTONE_TF.forEach((item, idx)=>{
+  const tf = document.createElement('div');
+  tf.className = 'tf-item';
+  tf.innerHTML = `
+    <div class="tf-statement"><b>${idx+1}.</b> ${item.cn} <br><span style="color:var(--muted); font-size:12.5px;">${item.py}</span></div>
+    <div class="tf-btns">
+      <button data-val="true" data-idx="${idx}">✅ Đúng</button>
+      <button data-val="false" data-idx="${idx}">❌ Sai</button>
+    </div>
+    <div class="tf-explain" id="tfexplain-${idx}">${item.explain}</div>
+  `;
+  tfBox.appendChild(tf);
+});
+tfBox.addEventListener('click',(e)=>{
+  const btn = e.target.closest('button[data-val]');
+  if(!btn) return;
+  const idx = btn.dataset.idx;
+  const item = CAPSTONE_TF[idx];
+  const chosen = btn.dataset.val === 'true';
+  const parent = btn.parentElement;
+  [...parent.children].forEach(b=>b.classList.remove('chosen-correct','chosen-wrong'));
+  if(chosen === item.correct){ btn.classList.add('chosen-correct'); }
+  else { btn.classList.add('chosen-wrong'); }
+  document.getElementById(`tfexplain-${idx}`).classList.add('show');
+});
+</script>
+</body>
+</html>
